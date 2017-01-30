@@ -14,7 +14,15 @@ var path = require( 'path' ),
             ],
 
     plugins = PRODUCTION
-        ?   []
+        ?   [
+                new webpack.optimize.UglifyJsPlugin( {
+                    comments: true,
+                    mangle: false,
+                    compress: {
+                        warnings: true
+                    }
+                } )
+            ]
         :   [
                 new webpack.HotModuleReplacementPlugin()
             ];
@@ -27,6 +35,10 @@ module.exports = {
         loaders: [ {
             test: /\.js$/,
             loaders: ['babel-loader'],
+            exclude: '/node_modules/'
+        }, {
+            test: /\.css$/,
+            loaders: ['style-loader', 'css-loader'],
             exclude: '/node_modules/'
         } ]
     },
